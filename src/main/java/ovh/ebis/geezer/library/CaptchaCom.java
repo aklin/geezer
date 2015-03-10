@@ -2,13 +2,13 @@ package ovh.ebis.geezer.library;
 
 import com.DeathByCaptcha.Captcha;
 import com.DeathByCaptcha.Client;
+import com.DeathByCaptcha.Exception;
 import com.DeathByCaptcha.SocketClient;
-import com.mashape.unirest.http.HttpResponse;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+//import java.util.logging.Level;
+//import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.openqa.selenium.*;
@@ -73,8 +73,8 @@ public class CaptchaCom extends Command {
 	 */
 	private String solve(final By eid) {
 		final BufferedImage sshot;
-		final HttpResponse<String> resp;
 		final WebElement e;
+		String ret = null;
 
 		e = getDriver().findElement(eid);
 
@@ -86,58 +86,57 @@ public class CaptchaCom extends Command {
 			return null;
 		}
 
-		//debug
-		return fire(saveImage(sshot));
-
+		try {
+			ret = fire(saveImage(sshot));
+		} catch (Exception ex) {
+			System.err.println("CAPTCHA API error " + ex);
+		}
+		return ret;
 	}
 
-	private String fire(final File challenge) {
+	private String fire(final File challenge) throws Exception {
 		// Put your DBC username & password here:
 		final Client client = new SocketClient(USERNAME, PASSWORD);
 		client.isVerbose = true;
 
 		try {
-			try {
-				System.out.
-					println("Your balance is " + client.getBalance() + " US cents");
-			} catch (IOException e) {
-				System.out.println("Failed fetching balance: " + e.toString());
-				return null;
-			}
-
-			Captcha captcha = null;
-			try {
-				// Upload a CAPTCHA and poll for its status with 120 seconds timeout.
-				// Put you CAPTCHA image file name, file object, input stream, or
-				// vector of bytes, and optional solving timeout (in seconds) here.
-				captcha = client.decode(challenge, 120);
-			} catch (IOException e) {
-				System.out.println("Failed uploading CAPTCHA");
-				return null;
-			} catch (InterruptedException ex) {
-				Logger.getLogger(CaptchaCom.class.getName()).
-					log(Level.SEVERE, null, ex);
-			}
-			if (null != captcha) {
-				System.out.
-					println("CAPTCHA " + captcha.id + " solved: " + captcha.text);
-				return captcha.text;
-			} // Report incorrectly solved CAPTCHA if necessary.
-			// Make sure you've checked if the CAPTCHA was in fact incorrectly
-			// solved, or else you might get banned as abuser.
-			/*try {
-			 if (client.report(captcha)) {
-			 System.out.println("Reported as incorrectly solved");
-			 } else {
-			 System.out.println("Failed reporting incorrectly solved CAPTCHA");
-			 }
-			 } catch (IOException e) {
-			 System.out.println("Failed reporting incorrectly solved CAPTCHA: " + e.toString());
-			 }*/ else
-				System.out.println("Failed solving CAPTCHA");
-		} catch (com.DeathByCaptcha.Exception e) {
-			System.out.println(e);
+			System.out.
+				println("Your balance is " + client.getBalance() + " US cents");
+		} catch (IOException e) {
+			System.out.println("Failed fetching balance: " + e.toString());
+			return null;
 		}
+
+		Captcha captcha = null;
+		try {
+			// Upload a CAPTCHA and poll for its status with 120 seconds timeout.
+			// Put you CAPTCHA image file name, file object, input stream, or
+			// vector of bytes, and optional solving timeout (in seconds) here.
+			captcha = client.decode(challenge, 120);
+		} catch (IOException e) {
+			System.out.println("Failed uploading CAPTCHA");
+			return null;
+		} catch (InterruptedException ex) {
+			System.err.println("Interrupted exception: " + ex);
+		}
+		if (null != captcha) {
+			System.out.
+				println("CAPTCHA " + captcha.id + " solved: " + captcha.text);
+			return captcha.text;
+		} // Report incorrectly solved CAPTCHA if necessary.
+		// Make sure you've checked if the CAPTCHA was in fact incorrectly
+		// solved, or else you might get banned as abuser.
+		/*try {
+		 if (client.report(captcha)) {
+		 System.out.println("Reported as incorrectly solved");
+		 } else {
+		 System.out.println("Failed reporting incorrectly solved CAPTCHA");
+		 }
+		 } catch (IOException e) {
+		 System.out.println("Failed reporting incorrectly solved CAPTCHA: " + e.toString());
+		 }*/ else
+			System.out.println("Failed solving CAPTCHA");
+
 		return null;
 	}
 
@@ -153,8 +152,7 @@ public class CaptchaCom extends Command {
 			ImageIO.write(img, "png", out);
 			System.out.println("Img file: " + out.getCanonicalPath());
 		} catch (IOException ex) {
-			Logger.getLogger(
-				CaptchaCom.class.getName()).log(Level.SEVERE, null, ex);
+			System.err.println("Cannot dump image file to disk: " + ex);
 			return null;
 		}
 		return out;
