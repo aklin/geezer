@@ -7,8 +7,6 @@ import com.DeathByCaptcha.SocketClient;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.List;
-//import java.util.logging.Level;
-//import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.openqa.selenium.*;

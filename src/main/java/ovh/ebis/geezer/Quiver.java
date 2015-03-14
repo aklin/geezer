@@ -12,6 +12,7 @@ import ovh.ebis.geezer.library.*;
 public class Quiver {
 
 	private static final HashMap<String, ComInfo> commands;
+//	private static final HashMap<String, Command> com;
 
 	static {
 		commands = new HashMap<>(8);
@@ -24,6 +25,9 @@ public class Quiver {
 		commands.put("click", new ComInfo("click", 1, 0));
 		commands.put("tab", new ComInfo("tab", 1, 0));
 		commands.put("captcha", new ComInfo("captcha", 2, 0));
+
+//		com=new HashMap<>();
+//		com.put("text", new TextCom(null, null));
 	}
 
 	/**
@@ -37,6 +41,11 @@ public class Quiver {
 		return commands.get(name);
 	}
 
+	/**
+	 * @deprecated @param args
+	 * @param cinfo
+	 * @return
+	 */
 	public static Command spawnCommand(final List<String> args,
 									   final ComInfo cinfo) {
 		try {
@@ -51,6 +60,8 @@ public class Quiver {
 					return new TabCom(args, cinfo);
 				case "captcha":
 					return new CaptchaCom(args, cinfo);
+				case "click":
+					return new ClickCom(args, cinfo);
 
 				default:
 					return null;
@@ -60,6 +71,12 @@ public class Quiver {
 		} catch (InvalidTargetException ex) {
 			System.err.println("Invalid target exception " + ex);
 		}
+		return null;
+	}
+
+	public static Command construct(final List<String> args, final String name) {
+		
+//		return commands.get(name);
 		return null;
 	}
 }

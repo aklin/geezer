@@ -3,6 +3,7 @@ package ovh.ebis.geezer.library;
 import java.util.ArrayDeque;
 import java.util.List;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import ovh.ebis.geezer.ArgumentNumberException;
 import ovh.ebis.geezer.SourceParser;
 
@@ -20,13 +21,18 @@ public class ClickCom extends Command {
 
 	/**
 	 * Clicks through all the elements!.
-	 * @return 
+	 * @return
 	 */
 	@Override
 	public String run() {
+		final WebDriver d = getDriver();
 		targets.stream().
 			forEach((b) -> {
-				getDriver().findElement(b).click();
+//				if(d.g)
+				System.out.println("\tClicking on " + b.toString());
+				d.findElement(b).click();
+				
+//				d.findElement(b).sendKeys(" ");
 			});
 		return null;
 	}

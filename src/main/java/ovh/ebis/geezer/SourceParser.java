@@ -7,6 +7,8 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.openqa.selenium.By;
+import org.openqa.selenium.lift.match.SelectionMatcher;
+import org.openqa.selenium.support.ui.Select;
 import ovh.ebis.geezer.library.ComInfo;
 
 public class SourceParser {
@@ -53,9 +55,6 @@ public class SourceParser {
 		return ret;
 	}
 
-//	public static Command parseLineP(final String s) {
-//		return parseLine(s);
-//	}
 	private static Command parseLine(final String s) {
 		final Matcher m = comPattern.matcher(s);
 		final ArrayList<String> bag;
@@ -80,16 +79,17 @@ public class SourceParser {
 				println("Parse error: \"" + m.group() + "\" not recognized");
 			return null;
 		}
-		System.out.println("Input: " + s);
+//		System.out.println("Input: " + s);
 
 		while (m.find()) {
 			group = m.group().trim();
 			if (!"".equals(group))
 				bag.add(group);
-			System.out.println("\tAdded " + group);
+//			System.out.println("\tAdded " + group);
 		}
 
 		return Quiver.spawnCommand(bag, cinfo);
+//		return new Command(bag, cinfo);
 	}
 
 	/**
@@ -119,10 +119,20 @@ public class SourceParser {
 	 * @return
 	 */
 	public static By elementFinder(final String e) {
-		if (e.startsWith("#"))
-			return new By.ById(e.substring(1));
-		else if (e.startsWith("!"))
-			return new By.ByName(e.substring(1));
-		return null;
+		final char selector = e.charAt(0);
+		final String loc = stripQuotes(e.substring(1));
+
+		switch (selector) {
+			case '#': //ID
+				return new By.ById(loc);
+			case '!': //name
+				return new By.ByName(loc);
+			case '\'': // xpath
+				return new By.ByXPath(loc);
+			case '[':
+				return By.cssSelector(loc);
+			default:
+				return null;
+		}
 	}
 }

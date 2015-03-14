@@ -3,11 +3,13 @@ package ovh.ebis.geezer.library;
 public class ComInfo {
 
 	private final String name;
+	private final String className;
 	private final int minArgs;
 	private final int maxArgs;
 	private final boolean hasArgs;
 
 	public ComInfo(final String name, final int min, final int max) {
+		this.className = this.getClass().getSimpleName();
 		this.name = name;
 		minArgs = min;
 		maxArgs = max;
@@ -22,7 +24,7 @@ public class ComInfo {
 		this(name, model.minArgs, model.maxArgs);
 	}
 
-	public String getName() {
+	public final String getName() {
 		return name;
 	}
 
@@ -30,50 +32,34 @@ public class ComInfo {
 	 * Get minimum number of arguments.
 	 * @return Number of arguments (low bound)
 	 */
-	public int getMinArgs() {
+	public final int getMinArgs() {
 		return minArgs;
 	}
 
 	/**
-	 * Sets minimum number of arguments required by the command. This method
-	 * does nothing if the parameter is less than 0.
-	 * @param minArgs A positive integer, minimum number of arguments
+	 * Return the class name of the command. Used to reflexively create new
+	 * commands at run-time.
+	 * @return
 	 */
-//	public void setMinArgs(int minArgs) {
-//		this.minArgs = minArgs >= 0 ? minArgs : this.minArgs;
-//		requiresArgs();
-//	}
+	protected String getClassName() {
+		return className;
+	}
+
 	/**
 	 * Get maximum number of arguments this command requires.
 	 * @return Number of arguments (high bound)
 	 */
-	public int getMaxArgs() {
+	public final int getMaxArgs() {
 		return maxArgs;
 	}
 
-	/**
-	 * Sets maximum number of arguments required by the command. This method
-	 * does nothing if the parameter is a negative number.
-	 * @param maxArgs A positive integer, maximum number of arguments
-	 */
-//	public void setMaxArgs(int maxArgs) {
-//		this.maxArgs = maxArgs >= 0 ? maxArgs : this.maxArgs;
-//		requiresArgs();
-//	}
 	/**
 	 * Checks whether this command takes arguments at all. If this is set to
 	 * false, then getMaxArgs and getMinArgs should both return 0 as well.
 	 * Otherwise, getMaxArgs should be a non-zero value.
 	 * @return
 	 */
-	public boolean hasArgs() {
+	public final boolean hasArgs() {
 		return hasArgs;
 	}
-
-	/**
-	 * Calculates whether this Info takes args and updates hasArgs accordingly.
-	 */
-//	private void requiresArgs() {
-//		hasArgs = (minArgs == 0 && maxArgs == 0);
-//	}
 }

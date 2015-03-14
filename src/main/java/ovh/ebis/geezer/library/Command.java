@@ -16,7 +16,8 @@ public abstract class Command extends ComInfo implements ComInt {
 	public Command(final List<String> args, final ComInfo com)
 		throws ArgumentNumberException {
 		super(com);
-		if (checkArgsSize(args)) {
+		arguments = args;
+		if (!checkArgsSize()) {
 			for (String s : args)
 				System.err.println(s);
 			throw new ArgumentNumberException(
@@ -24,7 +25,6 @@ public abstract class Command extends ComInfo implements ComInt {
 				+ getMinArgs() + "/" + getMaxArgs()
 				+ ", got: " + args.size());
 		}
-		arguments = args;
 	}
 
 	/**
@@ -35,6 +35,10 @@ public abstract class Command extends ComInfo implements ComInt {
 		driver = d;
 	}
 
+	/**
+	 * Get the static driver used by all Command instances.
+	 * @return WebDriver in use
+	 */
 	public static WebDriver getDriver() {
 		return driver;
 	}
@@ -44,9 +48,12 @@ public abstract class Command extends ComInfo implements ComInt {
 	 * @param args
 	 * @return
 	 */
-	private boolean checkArgsSize(final List<String> args) {
-		return args.size() < this.getMaxArgs()
-			|| args.size() > this.getMinArgs();
+	private boolean checkArgsSize() {
+		final int s = arguments.size();
+		final int l = this.getMinArgs();
+		final int h = this.getMaxArgs();
+
+		return (l <= s && (h < l ? true : s <= h));
 	}
 
 	/**

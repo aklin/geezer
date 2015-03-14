@@ -68,7 +68,6 @@ public class TextCom extends Command {
 			targets.add(tmp);
 
 		}
-
 	}
 
 }
