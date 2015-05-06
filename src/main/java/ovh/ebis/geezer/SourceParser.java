@@ -13,6 +13,9 @@ import ovh.ebis.geezer.library.ComInfo;
 
 public class SourceParser {
 
+	/**
+	 * Commend delimiter.
+	 */
 	private static final String COMMENT;
 
 	private final static Pattern comPattern;
@@ -26,27 +29,24 @@ public class SourceParser {
 									 Pattern.UNICODE_CHARACTER_CLASS);
 	}
 
-	public SourceParser(final Properties in, final File source)
-		throws FileNotFoundException {
-		this(in, new Scanner(source));
-	}
-
 	public SourceParser(final Properties in, final Scanner resource) {
 		inputs = in;
 		this.source = resource;
 	}
 
+	/**
+	 * Parse a collection of lines (such as a file) and turn it into a queue of
+	 * Commands.
+	 * @return
+	 */
 	public ArrayDeque<Command> parse() {
 		final ArrayDeque<Command> ret;
 		String cur;
 		Command temp;
 		ret = new ArrayDeque<>();
 
-		/*
-		 BUG: Comment is not escaped if enclosed in double quotes
-		 */
 		while (source.hasNext()) {
-			cur = source.nextLine().split(COMMENT, 2)[0].trim();
+			cur = source.nextLine();
 			temp = parseLine(cur);
 			if (temp != null)
 				ret.add(temp);
@@ -55,7 +55,12 @@ public class SourceParser {
 		return ret;
 	}
 
-	private static Command parseLine(final String s) {
+	/**
+	 * Parse a single line (statement) and make a Command object out of that.
+	 * @param s
+	 * @return
+	 */
+	public static Command parseLine(String s) {
 		final Matcher m = comPattern.matcher(s);
 		final ArrayList<String> bag;
 		final ComInfo cinfo;
@@ -63,6 +68,11 @@ public class SourceParser {
 		String group;
 
 		bag = new ArrayList<>(8);
+
+		/*
+		 BUG: Comment is not escaped if enclosed in double quotes
+		 */
+		s = s.split(COMMENT, 2)[0].trim();
 
 		/*
 		 Inputs consist of single groups [a-zA-Z0-9] and symbols, or same
@@ -114,7 +124,7 @@ public class SourceParser {
 	}
 
 	/**
-	 * Prase locator string and return By element.
+	 * Parse locator string and return By element.
 	 * @param e
 	 * @return
 	 */

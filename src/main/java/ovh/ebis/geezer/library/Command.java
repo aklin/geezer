@@ -6,7 +6,6 @@ import ovh.ebis.geezer.ArgumentNumberException;
 
 /**
  * Command class, trying to imitate the "Command" pattern.
- * @author
  */
 public abstract class Command extends ComInfo implements ComInt {
 
