@@ -1,9 +1,9 @@
 package ovh.ebis.geezer.library;
 
+import ovh.ebis.geezer.GeeShell;
+
 /**
- * Command Interface. Contains a single method, 'run', and I don't remember why
- * I had to make that into an interface. Probably wanted to do something
- * clojure-y.
+ * Command Interface. Contains the executor, 'run' and the session getter.
  */
 public interface ComInt {
 
@@ -12,5 +12,13 @@ public interface ComInt {
 	 * @return A string result which is command-dependant.
 	 */
 	public String run();
+
+	/**
+	 * Get the session (context).
+	 * @return Session under which this ComInt belongs.
+	 */
+	public GeeShell getContext();
+
+	public void setContext(final GeeShell c);
 
 }

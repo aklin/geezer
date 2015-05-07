@@ -11,8 +11,11 @@ import ovh.ebis.geezer.library.*;
  */
 public class Quiver {
 
+	/**
+	 * Dictionary that contains a "canonical model" of each command. This
+	 * includes number of arguments and keyword.
+	 */
 	private static final HashMap<String, ComInfo> commands;
-//	private static final HashMap<String, Command> com;
 
 	static {
 		commands = new HashMap<>(8);
@@ -25,13 +28,10 @@ public class Quiver {
 		commands.put("click", new ComInfo("click", 1, 0));
 		commands.put("tab", new ComInfo("tab", 1, 0));
 		commands.put("captcha", new ComInfo("captcha", 2, 0));
-
-//		com=new HashMap<>();
-//		com.put("text", new TextCom(null, null));
 	}
 
 	/**
-	 * Perform a command look-up.
+	 * Command look-up.
 	 * @param name
 	 * @return
 	 */
@@ -42,7 +42,7 @@ public class Quiver {
 	}
 
 	/**
-	 * @deprecated @param args
+	 * @param args
 	 * @param cinfo
 	 * @return
 	 */
@@ -74,9 +74,4 @@ public class Quiver {
 		return null;
 	}
 
-	public static Command construct(final List<String> args, final String name) {
-		
-//		return commands.get(name);
-		return null;
-	}
 }

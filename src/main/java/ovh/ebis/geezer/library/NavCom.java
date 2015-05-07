@@ -20,7 +20,6 @@ public class NavCom extends Command {
 		PROTOCOLS = new String[]{
 			"https://",
 			"http://"
-//			"file://"
 		};
 	}
 
@@ -49,12 +48,12 @@ public class NavCom extends Command {
 		boolean hasProto = false;
 		in = SourceParser.stripQuotes(in);
 
-		for (int i = 0; i < PROTOCOLS.length; i++)
-			if (in.startsWith(PROTOCOLS[i])) {
+		for (final String proto : PROTOCOLS)
+			if (in.startsWith(proto)) {
 				hasProto = true;
 				break;
 			}
-		System.out.println("IN is "+in);
+		System.out.println("IN is " + in);
 
 		if (!hasProto)
 			return PROTOCOLS[0] + in;

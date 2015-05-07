@@ -2,71 +2,32 @@ package ovh.ebis.geezer;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.util.ArrayDeque;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import ovh.ebis.geezer.library.Command;
 
 public class Geezer {
 
-	private static RunningMode mode;
-
-	public static void main(String[] args) throws FileNotFoundException {
-		final SourceParser p;
-		final ArrayDeque<Command> comQueue;
+	public static void main(String[] args) {
+		final GeeShell shell;
 		final Scanner source;
 
-		source = new Scanner(getSourceStream(args));
-
-		Command.setDriver(new FirefoxDriver());
-
-		System.out.println("Welcome to Geezer " + mode);
-
-		if (mode == RunningMode.REPL) {
-
-			comQueue = new ArrayDeque<>();
-
-			while (source.hasNext()) {
-				String line = source.nextLine();
-				Command com;
-
-				if ("exit".equals(line.toLowerCase()))
-					break;
-
-				com = SourceParser.parseLine(line);
-				if (com != null) {
-					comQueue.add(com);
-					com.run();
-				}
-			}
+		try {
+			if (args.length == 0)
+				source = new Scanner(System.in);
+			else
+				source = new Scanner(new FileInputStream(args[0]));
+		} catch (FileNotFoundException ex) {
+			System.err.println("Fatal: Resource cannot be loaded "+ex);
 			return;
 		}
 
-		p = new SourceParser(null, source);
-		comQueue = p.parse();
+		Command.setDriver(new FirefoxDriver());
 
-		try {
-			comQueue.stream().
-				forEach((c) -> {
-					System.out.println("Running " + c.getName());
-					c.run();
-					System.out.println("*");
-				});
-		} catch (NoSuchElementException ex) {
-			System.err.println("No such element! " + ex);
-		}
+		shell = new GeeShell(source);
 
-	}
+		shell.run();
 
-	private static InputStream getSourceStream(final String[] args) throws FileNotFoundException {
-		if (args.length == 0)
-			return System.in;
-
-		//change running mode to FILE
-		mode = RunningMode.FILE;
-		return new FileInputStream(args[0]);
 	}
 
 	private static String demoSource() {

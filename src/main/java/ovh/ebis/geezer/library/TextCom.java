@@ -53,7 +53,7 @@ public class TextCom extends Command {
 		final List<String> in = getArgs();
 		By tmp;
 		for (int i = 0; i < in.size(); i++) {
-			if (SourceParser.surroundedByQuotes(in.get(i))) {
+			if (SourceParser.isDoubleQuoted(in.get(i))) {
 				//this is the last argument, therefore the string to type
 				literal = SourceParser.stripQuotes(in.get(i));
 				break;
