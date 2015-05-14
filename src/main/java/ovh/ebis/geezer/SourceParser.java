@@ -31,7 +31,6 @@ public class SourceParser {
 		final Matcher m;
 		final ArrayList<String> bag;
 		final ComInfo cinfo;
-		final Command ret;
 		String group;
 
 		bag = new ArrayList<>(8);
