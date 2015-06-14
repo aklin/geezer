@@ -11,7 +11,7 @@ import ovh.ebis.geezer.GeeShell;
 public abstract class Command extends ComInfo implements ComInt {
 
 	private final List<String> arguments;
-	private static WebDriver driver;
+//	private static WebDriver driver;
 	private GeeShell context;
 
 	public Command(final List<String> args, final ComInfo com)
@@ -29,23 +29,17 @@ public abstract class Command extends ComInfo implements ComInt {
 	}
 
 	/**
-	 * Sets GLOBAL WebDriver.
-	 * @param d
+	 * Returns the driver used by the shell.
+	 *
+	 * @return
 	 */
-	public static final void setDriver(final WebDriver d) {
-		driver = d;
-	}
-
-	/**
-	 * Get the static driver used by all Command instances.
-	 * @return WebDriver in use
-	 */
-	public static WebDriver getDriver() {
-		return driver;
+	public WebDriver getDriver() {
+		return context.getDriver();
 	}
 
 	/**
 	 * Checks the number of arguments according to ComInfo rules.
+	 *
 	 * @param args
 	 * @return
 	 */
@@ -59,6 +53,7 @@ public abstract class Command extends ComInfo implements ComInt {
 
 	/**
 	 * Get the argument list given to this command instance.
+	 *
 	 * @return
 	 */
 	protected List<String> getArgs() {

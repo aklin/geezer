@@ -3,8 +3,6 @@ package ovh.ebis.geezer;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import ovh.ebis.geezer.library.Command;
 
 public class Geezer {
 
@@ -18,14 +16,12 @@ public class Geezer {
 			else
 				source = new Scanner(new FileInputStream(args[0]));
 		} catch (FileNotFoundException ex) {
-			System.err.println("Fatal: Resource cannot be loaded "+ex);
+			System.err.println("Fatal: Resource cannot be loaded " + ex);
 			return;
 		}
 
-		Command.setDriver(new FirefoxDriver());
-
 		shell = new GeeShell(source);
-
+		//don't forget to set a driver
 		shell.run();
 
 	}
