@@ -5,6 +5,7 @@ import java.util.Properties;
 import java.util.Scanner;
 import org.apache.commons.lang3.NotImplementedException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import ovh.ebis.geezer.library.ComInt;
 import ovh.ebis.geezer.library.Command;
 
@@ -96,6 +97,13 @@ public class GeeShell implements ComInt {
 	public final WebDriver setDriver(final WebDriver driver) {
 		this.driver = driver;
 		return this.driver;
+	}
+
+	/**
+	 * Sets the driver to a new Firefox instance.
+	 */
+	public final void setNewDefaultDriver() {
+		setDriver(new FirefoxDriver());
 	}
 
 	@Override
