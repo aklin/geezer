@@ -19,11 +19,12 @@ public class SourceParser {
 	static {
 		COMMENT = "^\\s*//";
 		comPattern = Pattern.compile("([^\\\"]\\S+[^\\\"])|(\\\".*\\\")",
-									 Pattern.UNICODE_CHARACTER_CLASS);
+			Pattern.UNICODE_CHARACTER_CLASS);
 	}
 
 	/**
 	 * Parse a single line (statement) and make a Command object out of that.
+	 *
 	 * @param s
 	 * @return
 	 */
@@ -69,6 +70,7 @@ public class SourceParser {
 
 	/**
 	 * Checks if string is surrounded by double quotes.
+	 *
 	 * @param test
 	 * @return
 	 */
@@ -78,6 +80,7 @@ public class SourceParser {
 
 	/**
 	 * Strips surrounding quotes from string if present.
+	 *
 	 * @param s
 	 * @return
 	 */
@@ -90,13 +93,14 @@ public class SourceParser {
 
 	/**
 	 * Parse locator string and return By element.
+	 *
 	 * @param e
 	 * @return
 	 */
 	public static By elementFinder(final String e) {
 		final char selector = e.charAt(0);
 		final String loc = stripQuotes(e.substring(1));
-
+		System.out.println("\tIdentifier: \"" + e + "\"");
 		switch (selector) {
 			case '#': //ID
 				return new By.ById(loc);
@@ -107,7 +111,7 @@ public class SourceParser {
 			case '[':
 				return By.cssSelector(loc);
 			default:
-				return null;
+				return new By.ByXPath(e);
 		}
 	}
 }
