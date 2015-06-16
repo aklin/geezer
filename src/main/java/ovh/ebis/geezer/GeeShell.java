@@ -66,17 +66,38 @@ public class GeeShell implements ComInt {
 	public String run() {
 		Command com;
 
-		while (sc.hasNext()) {
-			com = SourceParser.parseLine(sc.nextLine());
-
-			if (com == null)
-				continue;
-			com.setContext(this);
-			comQueue.add(com);
-			com.run();
-		}
+		while (sc.hasNext())
+			parseQueueExecute(sc.nextLine());
 
 		return null;
+	}
+
+	/**
+	 * Parse a line, add it to the execution queue and run.
+	 *
+	 * @param l
+	 */
+	public void parseQueueExecute(final String l) {
+		final Command com = parseAndQueue(l);
+		if (com != null)
+			com.run();
+	}
+
+	/**
+	 * Parse string and add it to the execution queue.
+	 *
+	 * @param l
+	 * @return
+	 */
+	public Command parseAndQueue(final String l) {
+		final Command com = SourceParser.parseLine(l);
+		if (com == null) {
+			System.err.println("Cannot grok: \"" + l + "\"");
+			return null;
+		}
+		comQueue.add(com);
+		com.setContext(this);
+		return com;
 	}
 
 	/**
