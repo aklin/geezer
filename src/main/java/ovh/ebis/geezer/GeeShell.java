@@ -58,29 +58,22 @@ public class GeeShell implements ComInt {
 	}
 
 	/**
-	 * Evaluate and run each command as they come.
+	 * Evaluate and run each command as they come. If the Scanner (given at constructor) is
+	 * null, this method will run commands already in the queue. If not, each string line
+	 * from the Scanner will be parsed first.
 	 *
 	 * @return
 	 */
 	@Override
 	public String run() {
-		Command com;
+		if (sc != null)
+			while (sc.hasNext())
+				parseAndQueue(sc.nextLine());
 
-		while (sc.hasNext())
-			parseQueueExecute(sc.nextLine());
+		for (final Command c : comQueue)
+			c.run();
 
 		return null;
-	}
-
-	/**
-	 * Parse a line, add it to the execution queue and run.
-	 *
-	 * @param l
-	 */
-	public void parseQueueExecute(final String l) {
-		final Command com = parseAndQueue(l);
-		if (com != null)
-			com.run();
 	}
 
 	/**
