@@ -30,8 +30,7 @@ public class SelectCom extends Command {
 		final Select s;
 		s = new Select(getDriver().findElement(target));
 
-		s.deselectAll();
-
+//		s.deselectAll();
 //		s.selectByVisibleText(selection);
 		s.selectByValue(selection);
 //		s.se
