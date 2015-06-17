@@ -18,7 +18,7 @@ public class SelectCom extends Command {
 	public SelectCom(List<String> args, ComInfo com) throws ArgumentNumberException {
 		super(args, com);
 		target = SourceParser.elementFinder(args.get(0));
-		selection = args.get(args.size() - 1);
+		selection = SourceParser.stripQuotes(args.get(args.size() - 1));
 	}
 
 	/**
@@ -32,6 +32,7 @@ public class SelectCom extends Command {
 
 //		s.deselectAll();
 //		s.selectByVisibleText(selection);
+		System.out.println("SElection: " + selection);
 		s.selectByValue(selection);
 //		s.se
 
