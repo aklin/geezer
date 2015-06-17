@@ -7,9 +7,8 @@ import ovh.ebis.geezer.ArgumentNumberException;
 import ovh.ebis.geezer.SourceParser;
 
 /**
- * Selects an item from a drop-down menu. Currently can only select a single
- * element, may expand it for multi-selection in the future. Syntax: select
- * [target] [visible-text]
+ * Selects an item from a drop-down menu. Currently can only select a single element, may
+ * expand it for multi-selection in the future. Syntax: select [target] [element-value]
  */
 public class SelectCom extends Command {
 
@@ -33,7 +32,8 @@ public class SelectCom extends Command {
 
 		s.deselectAll();
 
-		s.selectByVisibleText(selection);
+//		s.selectByVisibleText(selection);
+		s.selectByValue(selection);
 //		s.se
 
 		return null;
