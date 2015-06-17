@@ -7,13 +7,14 @@ import ovh.ebis.geezer.library.*;
 
 /**
  * ComInfo lookup table.
+ *
  * @author
  */
 public class Quiver {
 
 	/**
-	 * Dictionary that contains a "canonical model" of each command. This
-	 * includes number of arguments and keyword.
+	 * Dictionary that contains a "canonical model" of each command. This includes number of
+	 * arguments and keyword.
 	 */
 	private static final HashMap<String, ComInfo> commands;
 
@@ -32,6 +33,7 @@ public class Quiver {
 
 	/**
 	 * Command look-up.
+	 *
 	 * @param name
 	 * @return
 	 */
@@ -47,7 +49,7 @@ public class Quiver {
 	 * @return
 	 */
 	public static Command spawnCommand(final List<String> args,
-									   final ComInfo cinfo) {
+		final ComInfo cinfo) {
 		try {
 			switch (cinfo.getName()) {
 				case "nav":
@@ -62,6 +64,8 @@ public class Quiver {
 					return new CaptchaCom(args, cinfo);
 				case "click":
 					return new ClickCom(args, cinfo);
+				case "select":
+					return new SelectCom(args, cinfo);
 
 				default:
 					return null;
